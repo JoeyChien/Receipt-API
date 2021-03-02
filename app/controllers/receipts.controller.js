@@ -67,29 +67,26 @@ exports.create = (req, res, next) => {
 };
 
 exports.findAll = (req, res) => {
-  Receipts.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occured while retrieving Notes",
-      });
-    });
-};
+  if (req.body.tag_id) var tag_id = req.body.tag_id;
 
-// exports.findOne = (req, res) => {
-//   const id = req.params.id;
-//   Receipts.findByPk(id)
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Error retrieving Notes with id=" + id,
-//       });
-//     });
-// };
+  Receipts.findAll(
+    tag_id ? { where: { tag_id: tag_id }} : {}
+  )
+  .then((data) => {
+    res.json({ 
+      status: "SUCCESS",
+      message: "列出所有發票成功",
+      data: data
+    });
+  })
+  .catch((err) => {
+    res.json({ 
+      status: "FAIL",
+      message:  err.message || "列出所有發票失敗",
+      data: null
+    });
+  });
+};
 
 // exports.update = (req, res) => {
 //   const id = req.params.id;
@@ -104,24 +101,6 @@ exports.findAll = (req, res) => {
 //     } else {
 //       res.send({
 //         message: `Cannot update Note with id=${id}`,
-//       });
-//     }
-//   });
-// };
-
-// exports.delete = (req, res) => {
-//   const id = req.params.id;
-
-//   Receipts.destroy({
-//     where: { id: id },
-//   }).then((data) => {
-//     if (data) {
-//       res.send({
-//         message: "Note was delete successfully!",
-//       });
-//     } else {
-//       res.send({
-//         message: `Cannot delete Note with id=${id}`,
 //       });
 //     }
 //   });
