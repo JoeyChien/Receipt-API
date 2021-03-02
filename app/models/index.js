@@ -18,4 +18,5 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.receipts = require("./receipts.model.js")(sequelize, Sequelize);
+db.tags = require("./tags.model.js")(sequelize, Sequelize);
 module.exports = db;
