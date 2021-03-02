@@ -4,17 +4,17 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const routes = require("./app/routes");
-app.use("/api/receipts", routes);
+app.use("/api", routes);
 var corsOptions = {
   origin: "http://localhost:3000",
 };
 
 app.use(cors(corsOptions));
-
-app.use(bodyParser.json());
-
-app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/models");
 db.sequelize.sync();
