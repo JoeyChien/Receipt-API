@@ -27,7 +27,7 @@ exports.create = (req, res) => {
       res.json({ 
         status: "FAIL",
         message:  err.message || "標籤建立失敗",
-        data: data
+        data: null
       });
     });
 };
@@ -45,7 +45,7 @@ exports.findAll = (req, res) => {
       res.json({ 
         status: "FAIL",
         message:  err.message || "列出所有標籤失敗",
-        data: data
+        data: null
       });
     });
 };
@@ -55,7 +55,13 @@ exports.findOne = (req, res) => {
 
   Tags.findByPk(id)
     .then((data) => {
-    if (!data) data = "無此標籤";
+      if (!data) {
+        res.json({ 
+          status: "FAIL",
+          message: "查無標籤",
+          data: null
+        });
+      }
       res.json({ 
         status: "SUCCESS",
         message: "查找標籤成功",
@@ -65,44 +71,89 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.json({ 
         status: "FAIL",
-        message:  "查找標籤失敗",
-        data: data
+        message:  err.message || "查找標籤失敗",
+        data: null
       });
     });
 };
 
-// exports.update = (req, res) => {
-//   const id = req.params.id;
+exports.update = (req, res) => {
+  const id = req.params.id;
 
-//   Tags.update(req.body, {
-//     where: { id: id },
-//   }).then((data) => {
-//     if (data) {
-//       res.send({
-//         message: "Note was updated successfully",
-//       });
-//     } else {
-//       res.send({
-//         message: `Cannot update Note with id=${id}`,
-//       });
-//     }
-//   });
-// };
+  Tags.findByPk(id)
+    .then((data) => {
+      if (!data) {
+        res.json({ 
+          status: "FAIL",
+          message: "查無標籤",
+          data: null
+        });
+      } else {
+        data.update(
+          { name: req.body.name }
+        )
+        .then((data) => {
+          if (data) {
+            res.json({ 
+              status: "SUCCESS",
+              message: "更新標籤成功",
+              data: null
+            });
+          } else {
+            res.json({ 
+              status: "FAIL",
+              message: "更新標籤失敗",
+              data: null
+            });
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      res.json({ 
+        status: "FAIL",
+        message:  err.message,
+        data: null
+      });
+    });
+};
 
-// exports.delete = (req, res) => {
-//   const id = req.params.id;
-
-//   Tags.destroy({
-//     where: { id: id },
-//   }).then((data) => {
-//     if (data) {
-//       res.send({
-//         message: "Note was delete successfully!",
-//       });
-//     } else {
-//       res.send({
-//         message: `Cannot delete Note with id=${id}`,
-//       });
-//     }
-//   });
-// };
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  Tags.findByPk(id)
+  .then((data) => {
+    if (!data) {
+      res.json({ 
+        status: "FAIL",
+        message: "查無標籤",
+        data: null
+      });
+    } else {
+      data.destroy(
+        { where: { id: id } }
+      )
+      .then((data) => {
+        if (data) {
+          res.json({ 
+            status: "SUCCESS",
+            message: "刪除標籤成功",
+            data: null
+          });
+        } else {
+          res.json({ 
+            status: "FAIL",
+            message: "刪除標籤失敗",
+            data: null
+          });
+        }
+      });
+    }
+  })
+  .catch((err) => {
+    res.json({ 
+      status: "FAIL",
+      message:  err.message,
+      data: null
+    });
+  });
+};

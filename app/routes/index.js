@@ -27,7 +27,7 @@ router.post("/receipts/upload", upload.single("receipt"), receipts.loadfile);
 router.post("/tag", tags.create);
 router.get("/tag/", tags.findAll);
 router.get("/tag/:id", tags.findOne);
-// router.put("/tag/:id", tags.update);
-// router.delete("/tag/:id", tags.delete);
+router.put("/tag/:id", tags.update);
+router.delete("/tag/:id", tags.delete);
 
 module.exports = router;
