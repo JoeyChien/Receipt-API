@@ -8,14 +8,11 @@ module.exports = (sequelize, Sequelize) => {
     tag_id: {
       type: Sequelize.INTEGER,
     },
-    payment_id: {
-      type: Sequelize.INTEGER,
-    },
     store_info: {
       type: Sequelize.TEXT,
     },
     transaction_time: {
-      type: Sequelize.DATE,
+      type: Sequelize.STRING,
     },
     receipt_id_no: {
       type: Sequelize.INTEGER,
@@ -24,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.TEXT,
     },
     total: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DOUBLE,
     },
   });
   return Receipt;
