@@ -1,17 +1,20 @@
-const dbConfig = require("../config/db.config");
 const Sequelize = require("sequelize");
+
+var sequelize;
 if (process.env.DATABASE_URL) {
-  // the application is executed on Heroku ... use the postgres         database
-  sequelize =new Sequelize(process.env.DATABASE_URL,
-  {
+  sequelize = new Sequelize(process.env.DATABASE_URL, null, null, {
     dialect: "postgres",
     protocol: "postgres",
+    host: "receipt-api-joey.herokuapp.com",
     dialectOptions: {
       ssl: true,
+      rejectUnauthorized: false
     }
   });
+
 } else {
-  const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  const dbConfig = require("../config/db.config");
+  sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
     operatorAliases: 0,
