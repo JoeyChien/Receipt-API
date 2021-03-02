@@ -32,30 +32,44 @@ exports.create = (req, res) => {
     });
 };
 
-// exports.findAll = (req, res) => {
-//   Tags.findAll()
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: err.message || "Some error occured while retrieving Notes",
-//       });
-//     });
-// };
+exports.findAll = (req, res) => {
+  Tags.findAll()
+    .then((data) => {
+      res.json({ 
+        status: "SUCCESS",
+        message: "列出所有標籤成功",
+        data: data
+      });
+    })
+    .catch((err) => {
+      res.json({ 
+        status: "FAIL",
+        message:  err.message || "列出所有標籤失敗",
+        data: data
+      });
+    });
+};
 
-// exports.findOne = (req, res) => {
-//   const id = req.params.id;
-//   Tags.findByPk(id)
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Error retrieving Notes with id=" + id,
-//       });
-//     });
-// };
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Tags.findByPk(id)
+    .then((data) => {
+    if (!data) data = "無此標籤";
+      res.json({ 
+        status: "SUCCESS",
+        message: "查找標籤成功",
+        data: data
+      });
+    })
+    .catch((err) => {
+      res.json({ 
+        status: "FAIL",
+        message:  "查找標籤失敗",
+        data: data
+      });
+    });
+};
 
 // exports.update = (req, res) => {
 //   const id = req.params.id;
