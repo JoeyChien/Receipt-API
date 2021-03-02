@@ -16,9 +16,8 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 /* 發票功能 */ 
-router.post("/receipts", receipts.create);
-router.post("/receipts/upload", upload.single("receipt"), receipts.loadfile);
-// router.get("/receipts/", receipts.findAll);
+router.post("/receipts", upload.single("receipt"), receipts.create);
+router.get("/receipts/", receipts.findAll);
 // router.get("/receipts/:id", receipts.findOne);
 // router.put("/receipts/:id", receipts.update);
 // router.delete("/receipts/:id", receipts.delete);
