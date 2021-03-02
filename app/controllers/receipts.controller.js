@@ -88,20 +88,43 @@ exports.findAll = (req, res) => {
   });
 };
 
-// exports.update = (req, res) => {
-//   const id = req.params.id;
+exports.update = (req, res) => {
+  const id = req.params.id;
 
-//   Receipts.update(req.body, {
-//     where: { id: id },
-//   }).then((data) => {
-//     if (data) {
-//       res.send({
-//         message: "Note was updated successfully",
-//       });
-//     } else {
-//       res.send({
-//         message: `Cannot update Note with id=${id}`,
-//       });
-//     }
-//   });
-// };
+  Receipts.findByPk(id)
+    .then((data) => {
+      if (!data) {
+        res.json({ 
+          status: "FAIL",
+          message: "查無發票",
+          data: null
+        });
+      } else {
+        data.update(
+          { tag_id: req.body.tag_id }
+        )
+        .then((data) => {
+          if (data) {
+            res.json({ 
+              status: "SUCCESS",
+              message: "更新發票的標籤成功",
+              data: null
+            });
+          } else {
+            res.json({ 
+              status: "FAIL",
+              message: "更新發票的標籤失敗",
+              data: null
+            });
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      res.json({ 
+        status: "FAIL",
+        message:  err.message,
+        data: null
+      });
+    });
+};
