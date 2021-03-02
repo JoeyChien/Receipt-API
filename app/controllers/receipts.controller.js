@@ -1,8 +1,47 @@
 const db = require("../models");
 const Receipts = db.receipts;
 const Op = db.Sequelize.Op;
+const fs = require("fs");
 
-exports.create = (req, res) => {  
+exports.loadfile = (req, res, next) => {
+  var file = req.file;
+    // var user_id = req.user_id; 
+  // var tag_id = req.tag_id; 
+  var contentIndex = [];
+  var txtLine = [];
+  var store_info = "";
+  var transaction_time = "";
+  var receipt_id_no = "";
+  var content = "";
+  var total = "";
+  var payment_id = "";
+
+  if (!file) { 
+    const error = new Error("請上傳檔案");
+    error.httpStatusCode = 400;
+    return next(error);
+  }
+
+  var data = fs.readFileSync(req.file.path).toString();
+  txtLine = data.split("\r\n");
+ 
+  for (i in txtLine) {
+    if (txtLine[i] == "" ||
+        txtLine[i] == "------------------------" ||
+        txtLine[i] == "+----------------------------------------------+") {
+      contentIndex.push(i);
+    }
+    if (txtLine[i] == "--- Thank You & Have A Nice Day ---") break;
+  }
+
+  store_info = txtLine.slice(0, contentIndex[0]);
+  transaction_time = txtLine.slice(contentIndex[0], contentIndex[1]);
+  res.send(store_info);
+  
+};
+
+exports.create = (req, res, next) => { 
+  console.log("receiptFile"); 
   if (!req.body.user_id) {
     res.status(400).send({
       message: "Content can not be empty !",

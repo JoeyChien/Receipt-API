@@ -1,16 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers");
+const receipts = require("../controllers/receipts.controller.js");
+const multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '.txt')
+  }
+})
+
+var upload = multer({ storage: storage });
+
+router.post("/", receipts.create);
+
+router.post("/upload", upload.single("receipt"), receipts.loadfile);
 
 
-router.post("/", controller.create);
+// router.get("/", receipts.findAll);
 
-// router.get("/", controller.findAll);
+// router.get("/:id", receipts.findOne);
 
-// router.get("/:id", controller.findOne);
+// router.put("/:id", receipts.update);
 
-// router.put("/:id", controller.update);
-
-// router.delete("/:id", controller.delete);
+// router.delete("/:id", receipts.delete);
 
 module.exports = router;
