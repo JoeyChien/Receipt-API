@@ -2,7 +2,7 @@
  
 ## 規劃資料
 
-### [ERD:LINK:](https://drawsql.app/nope-1/diagrams/receipt-full-ver)
+### [ERD](https://drawsql.app/nope-1/diagrams/receipt-full-ver)
 
 ### 參考文章
 - [專案架構](https://dev.to/rajandmr/node-js-rest-crud-api-with-postgres-213p)
