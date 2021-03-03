@@ -57,7 +57,7 @@
 
   | 功能 | Method |path |參數 |備註 |
   | -------- | -------- | -------- |-------- |-------- |
-  | 上傳發票 | POST  | {DOMAIN}/api/receipt/ | name |  |
+  | 上傳發票 | POST  | {DOMAIN}/api/receipt/ | receipt, user_id, tag_id | receipt欄位為上傳發票的txt檔 |
   | 讀取所有發票 | GET  | {DOMAIN}/api/receipt/ | tag_id (可略) |  有帶tag_id參數則找所有該標籤發票|
   | 修改特定發票的標籤 |  PUT | {DOMAIN}/api/receipt/:id | tag_id |  |
 
